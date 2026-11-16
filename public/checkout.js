@@ -17,7 +17,7 @@ function setFieldsLocked(locked) {
 function updateStatus(status) {
   const messages = {
     pending: 'Aguardando o pagamento. A confirmação pode levar alguns instantes.',
-    paid: 'Pagamento confirmado! O vendedor orientará o acesso ao conteúdo pelo email informado.',
+    paid: 'Pagamento confirmado! Vamos encaminhar você para liberar seu acesso com o suporte.',
     cancelled: 'Pagamento cancelado. Entre em contato com o vendedor antes de gerar outra cobrança.',
     expired: 'Este Pix expirou. Não pague este código. Entre em contato com o vendedor.',
   };
@@ -61,10 +61,10 @@ async function request(path, body, timeout = 27000) {
 }
 function scheduleStatus() {
   clearTimeout(timer);
-  if (!document.hidden && payment?.status === 'pending') timer = setTimeout(() => checkStatus(false), 8000);
+  if (!document.hidden && ['pending', 'paid'].includes(payment?.status)) timer = setTimeout(() => checkStatus(false), 8000);
 }
 async function checkStatus(manual = true) {
-  if (!payment || checking || payment.status !== 'pending') return;
+  if (!payment || checking || !['pending', 'paid'].includes(payment.status)) return;
   checking = true;
   $('check-status').disabled = true;
   if (manual) $('payment-status').textContent = 'Consultando o pagamento…';
@@ -73,8 +73,13 @@ async function checkStatus(manual = true) {
     if (result.amount !== product.amount || !['pending', 'paid', 'cancelled', 'expired'].includes(result.status)) throw new Error('Não foi possível validar a confirmação do pagamento.');
     payment.status = result.status;
     storage.set({ payment }); updateStatus(result.status);
+    // Redirect only after the server verifies the charge, never from the cached status.
+    if (result.status === 'paid') location.replace('/obrigado.html');
   } catch (error) {
-    if (manual) $('payment-status').textContent = 'Não foi possível consultar agora. Se você já pagou, não pague novamente. Tente consultar em instantes.';
+    if (manual || payment.status === 'paid') {
+      $('payment-status').textContent = 'Não foi possível consultar agora. Se você já pagou, não pague novamente. Tente consultar em instantes.';
+      $('check-status').hidden = false;
+    }
   } finally { checking = false; $('check-status').disabled = false; scheduleStatus(); }
 }
 
@@ -115,7 +120,7 @@ $('copy-pix').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(payment.copyPaste); $('copy-feedback').textContent = 'Código Pix copiado!'; }
   catch { $('pix-code').focus(); $('pix-code').select(); $('copy-feedback').textContent = 'Selecione e copie o código no campo abaixo.'; }
 });
-document.addEventListener('visibilitychange', () => { clearTimeout(timer); if (!document.hidden && payment?.status === 'pending') checkStatus(false); });
+document.addEventListener('visibilitychange', () => { clearTimeout(timer); if (!document.hidden && ['pending', 'paid'].includes(payment?.status)) checkStatus(false); });
 
 try {
   const response = await fetch('/catalog.json');
@@ -142,7 +147,7 @@ try {
     const saved = storage.get();
     if (saved?.payment?.amount === product.amount && saved.payment.token && saved.payment.copyPaste) {
       payment = saved.payment; renderPayment();
-      if (payment.status === 'pending') checkStatus(false);
+      if (['pending', 'paid'].includes(payment.status)) checkStatus(false);
     } else if (saved?.uncertain) {
       uncertain = true; $('generate').disabled = true;
       $('generate-label').textContent = 'Verifique a cobrança com o vendedor';

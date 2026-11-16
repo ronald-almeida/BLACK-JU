@@ -45,6 +45,8 @@ Os testes automatizados usam respostas controladas e não geram cobranças reais
 
 O checkout valida nome, emails, CPF/CNPJ numérico e celular no cliente e no servidor. A aba guarda a referência da cobrança em sessionStorage, sem os dados pessoais do formulário, para retomar um Pix após recarregar a página. Respostas incertas bloqueiam reenvio na mesma aba; não existe garantia de idempotência entre dispositivos ou abas, pois esse suporte não está documentado pela Firebot. Não há reenvio automático de cobranças.
 
-A consulta de status pausa quando a aba fica oculta e termina quando o pagamento é concluído ou cancelado. O prazo só é mostrado se o provedor informar a expiração. Este projeto não cria contas de aluno, envia emails nem libera cursos automaticamente: a entrega é responsabilidade da operação do vendedor. Não há banco próprio de pedidos nem webhook de liberação.
+A consulta de status pausa quando a aba fica oculta e termina quando o pagamento é concluído ou cancelado. O prazo só é mostrado se o provedor informar a expiração. Após a API confirmar `paid` e o valor esperado, o checkout redireciona para `/obrigado.html`. Uma cobrança salva como paga é consultada novamente ao recarregar; o status no navegador, sozinho, não dispara o redirecionamento.
+
+A página de obrigado orienta o comprador a liberar o acesso pelo WhatsApp do suporte, `+55 75 98839-3742`. O botão abre uma mensagem pronta, sem transmitir os dados do comprador nem o token da cobrança. A liberação é manual pela equipe: este projeto não cria contas de aluno, envia emails nem libera cursos automaticamente. A página de obrigado é pública e não é um comprovante de pagamento; o suporte deve conferir a compra no provedor antes da liberação. Não há banco próprio de pedidos nem webhook de liberação.
 
 As páginas de detalhes resumem as informações do catálogo original e mantêm a navegação no novo site. Os CTAs de compra apontam para `/checkout.html?produto=<identificador>`.

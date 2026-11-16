@@ -1,0 +1,46 @@
+@font-face{font-family:Campaign;src:url('/assets-pre-black-ju/medium-perf.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Campaign;src:url('/assets-pre-black-ju/heavy-perf.woff2') format('woff2');font-weight:900;font-display:swap}
+*{box-sizing:border-box}
+body{margin:0;min-height:100svh;display:flex;flex-direction:column;background:#08060c;color:#fff;font-family:Campaign,Arial,sans-serif;position:relative;isolation:isolate}
+a{color:inherit}
+.campaign-background{position:absolute;inset:0;overflow:hidden;z-index:-1;background:radial-gradient(ellipse at 84% 45%,#f5006822,transparent 54%),radial-gradient(ellipse at 0 0,#258bff16,transparent 42%),#08060c}
+.campaign-background::before{content:'';position:absolute;inset:0;background:url('/assets-pre-black-ju/hero-neon-texture.svg') center/cover;opacity:.25}
+.page-header,main,footer{width:min(1200px,100%);margin-inline:auto;padding-inline:40px}
+.page-header{display:flex;align-items:center;justify-content:space-between;padding-top:18px}
+.page-header>a{display:block}.logo{display:block;width:160px;height:auto}
+.header-note{color:#bcabbc;font-size:13px;letter-spacing:.04em}
+main{flex:1;display:flex;align-items:center}
+.thank-you{display:grid;grid-template-columns:1.1fr 1fr;align-items:center;width:100%;padding:18px 0 40px}
+.message{position:relative;z-index:2;animation:reveal .7s ease-out both}
+.success-mark{display:grid;place-items:center;width:48px;height:48px;color:#ff60a4;border:1px solid #f5006870;border-radius:50%;background:#f5006812;box-shadow:0 0 30px #f5006828;margin-bottom:22px}
+.success-mark svg{width:28px;height:28px}
+.eyebrow{margin:0 0 18px;font-size:11px;letter-spacing:.14em;font-weight:900;color:#ff79b3}
+h1{font-size:clamp(40px,5.1vw,66px);line-height:1.04;letter-spacing:-.045em;font-weight:400;margin:0 0 25px}
+h1 em{font-style:normal;font-weight:900;color:#ff358b;text-shadow:0 0 40px #f5006844}
+.lead{font-size:clamp(20px,2vw,24px);line-height:1.4;max-width:470px;margin:0 0 14px}
+.description{color:#c6b9c6;font-size:16px;line-height:1.6;max-width:440px;margin:0 0 28px}
+.access-button{display:flex;align-items:center;justify-content:center;gap:12px;width:min(100%,370px);padding:18px 24px;border-radius:999px;background:#00e96b;color:#062b17;font-size:18px;font-weight:900;text-decoration:none;border:1px solid #88ffbf;box-shadow:0 8px 35px #00e96b22;transition:transform .2s,background .2s,box-shadow .2s}
+.access-button svg{width:23px;height:23px;flex:none}.button-arrow{font-family:Arial,sans-serif;font-size:23px;margin-left:8px}
+.access-button:hover{transform:translateY(-3px);background:#59f49f;box-shadow:0 10px 35px #00e96b35}
+a:focus-visible{outline:3px solid #fff;outline-offset:6px}
+.support-number{color:#aa9aaa;font-size:12px;line-height:1.5;margin:14px 0 0}
+.portrait{position:relative;align-self:center;margin:0 -30px 0 -35px;pointer-events:none;animation:reveal 1s ease-out both}
+.portrait img{display:block;width:100%;height:min(640px,calc(100svh - 200px));object-fit:contain;position:relative;filter:drop-shadow(0 0 25px #f5006844);mask-image:linear-gradient(#000 78%,transparent 98%)}
+.portrait-halo{position:absolute;inset:5% -5% 0;background:radial-gradient(ellipse,#f5006855,transparent 67%);filter:blur(25px);animation:glow 6s ease-in-out infinite alternate}
+footer{display:flex;justify-content:space-between;align-items:center;gap:20px;border-top:1px solid #ffffff12;padding-block:24px;color:#a697a6;font-size:12px}
+footer>a{text-decoration:none}footer>a:hover{color:#fff}
+@keyframes reveal{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glow{to{opacity:.55;transform:scale(.95)}}
+@media(max-width:760px){
+  .page-header,main,footer{padding-inline:24px}
+  .page-header{padding-top:8px}.logo{width:148px}.header-note{display:none}
+  .thank-you{grid-template-columns:1fr;padding:20px 0 0}
+  .message{max-width:500px;margin-inline:auto;width:100%}
+  h1{font-size:clamp(38px,8.4vw,58px)}
+  .lead{font-size:21px}.description{font-size:15px}
+  .access-button{width:100%}.support-number{text-align:center;font-size:11px}
+  .portrait{width:min(100%,390px);margin:25px auto 0;max-height:365px;overflow:hidden}
+  .portrait img{height:auto;mask-image:linear-gradient(#000 63%,transparent 92%)}
+  footer{padding-block:22px;font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
