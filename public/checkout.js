@@ -30,13 +30,13 @@ function updateStatus(status) {
     $('qr-area').hidden = true;
     $('pix-code').hidden = true;
     document.querySelector('label[for="pix-code"]').hidden = true;
-    $('generate').textContent = status === 'paid' ? 'Pagamento confirmado ✓' : 'Cobrança encerrada';
+    $('generate-label').textContent = status === 'paid' ? 'Pagamento confirmado ✓' : 'Cobrança encerrada';
   }
 }
 function renderPayment() {
   setFieldsLocked(true);
   $('generate').disabled = true;
-  $('generate').textContent = 'Código Pix gerado';
+  $('generate-label').textContent = 'Código Pix gerado';
   $('pix-code').value = payment.copyPaste;
   $('payment-result').hidden = false;
   const qr = window.qrcode(0, 'M');
@@ -91,7 +91,7 @@ $('checkout-form').addEventListener('submit', async event => {
     $(`${id}-error`).textContent = errors[id] || '';
   }
   if (Object.keys(errors).length) { $(Object.keys(errors)[0]).focus(); return; }
-  busy = true; showError(''); $('generate').disabled = true; $('generate').textContent = 'Gerando Pix…';
+  busy = true; showError(''); $('generate').disabled = true; $('generate-label').textContent = 'Gerando Pix…';
   // Persist before sending: an interrupted tab must not silently create a second charge.
   storage.set({ uncertain: true });
   try {
@@ -103,7 +103,7 @@ $('checkout-form').addEventListener('submit', async event => {
     storage.set({ uncertain });
     showError(error.name === 'TimeoutError' || error.name === 'AbortError' || error instanceof TypeError ? 'Não foi possível confirmar a resposta da cobrança. Não repita a compra agora; verifique com o vendedor.' : error.message);
     $('generate').disabled = uncertain;
-    $('generate').textContent = uncertain ? 'Verifique a cobrança com o vendedor' : 'Gerar código QR';
+    $('generate-label').textContent = uncertain ? 'Verifique a cobrança com o vendedor' : 'Gerar código QR';
     $('form-error').focus();
   } finally { busy = false; }
 });
@@ -145,7 +145,7 @@ try {
       if (payment.status === 'pending') checkStatus(false);
     } else if (saved?.uncertain) {
       uncertain = true; $('generate').disabled = true;
-      $('generate').textContent = 'Verifique a cobrança com o vendedor';
+      $('generate-label').textContent = 'Verifique a cobrança com o vendedor';
       showError('Uma solicitação anterior ficou sem confirmação. Verifique com o vendedor antes de repetir a compra.');
     }
   }
