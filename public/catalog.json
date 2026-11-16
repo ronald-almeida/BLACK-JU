@@ -1,0 +1,335 @@
+[
+  {
+    "id": "formacao-em-ecolalia",
+    "name": "Formação em Ecolalia",
+    "kind": "course",
+    "amount": 39700,
+    "originalAmount": 89700,
+    "previousOffer": 62790,
+    "image": "/assets-pre-black-ju/capas-portal/card-vendas-ecolalia-capa-3-1024x1024.jpg",
+    "description": "Com quem você aprende faz toda a diferença: formação em ecolalia com uma das maiores referências do país.",
+    "lessons": "29 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/Ecolalia/formacao-ecolalia.html"
+  },
+  {
+    "id": "marcos-do-desenvolvimento-infantil",
+    "name": "Marcos do Desenvolvimento Infantil",
+    "kind": "course",
+    "amount": 39700,
+    "originalAmount": 89700,
+    "previousOffer": 53820,
+    "image": "/assets-pre-black-ju/capas-portal/card_venda_600x600-2.jpg",
+    "description": "Decifre os marcos do desenvolvimento infantil: transforme incertezas em diagnósticos precisos.",
+    "lessons": "41 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/MDI/mdi.html"
+  },
+  {
+    "id": "abfw-completo",
+    "name": "ABFW — Completo",
+    "kind": "course",
+    "amount": 39700,
+    "originalAmount": 149700,
+    "previousOffer": 104790,
+    "image": "/assets-pre-black-ju/capas-portal/capa-abfw.png",
+    "description": "O protocolo ABFW é um teste de linguagem infantil abordando as áreas de Fonologia, Vocabulário, Fluência e Pragmática. É um dos protocolos fonoaudiológicos mais consolidados e utilizados por profissionais. Melhore sua prática clínica e aprenda mais sobre essa ferramenta de trabalho incrível.",
+    "lessons": "45 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/ABFW/abfw.html"
+  },
+  {
+    "id": "tmf-transtornos-motores-de-fala-no-tea",
+    "name": "TMF — Transtornos Motores de Fala no TEA",
+    "kind": "course",
+    "amount": 39700,
+    "originalAmount": 89700,
+    "previousOffer": 62790,
+    "image": "/assets-pre-black-ju/capas-portal/capa-600x600px_TMF.jpg",
+    "description": "Apraxia, disartria ou apenas atraso? Aprenda a diferenciar e intervir com segurança nos Transtornos Motores de Fala no TEA.",
+    "lessons": "24 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/TMF/tmf.html"
+  },
+  {
+    "id": "formacao-em-autismo",
+    "name": "Formação em Autismo",
+    "kind": "course",
+    "amount": 39700,
+    "originalAmount": 169700,
+    "previousOffer": 84850,
+    "image": "/assets-pre-black-ju/capas-portal/Foto-principal.png",
+    "description": "Se você sente que pode fazer mais no atendimento ao autismo? Este é o seu próximo passo.",
+    "lessons": "49 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/autismo/formacao-autismo.html"
+  },
+  {
+    "id": "diagnostico-diferencial-em-linguagem",
+    "name": "Diagnóstico Diferencial em Linguagem",
+    "kind": "course",
+    "amount": 39700,
+    "originalAmount": 89700,
+    "previousOffer": 62790,
+    "image": "/assets-pre-black-ju/capas-portal/capa-DDL2-600x600px.jpg",
+    "description": "Do atraso à apraxia: descubra como identificar e diferenciar transtornos de linguagem com clareza.",
+    "lessons": "38 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/DDL/ddl.html"
+  },
+  {
+    "id": "avaliando-a-linguagem-infanto-juvenil",
+    "name": "Avaliando a Linguagem Infanto Juvenil",
+    "kind": "course",
+    "amount": 39700,
+    "originalAmount": 89700,
+    "previousOffer": 62790,
+    "image": "/assets-pre-black-ju/capas-portal/capa-ALIJ.jpg",
+    "description": "Eleve sua atuação profissional: aprenda a aplicar ferramentas essenciais para diagnósticos eficazes em linguagem infantil e juvenil.",
+    "lessons": "31 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/ALI/ali.html"
+  },
+  {
+    "id": "tea-para-professores",
+    "name": "TEA Para Professores",
+    "kind": "course",
+    "amount": 19880,
+    "originalAmount": 49700,
+    "previousOffer": 19880,
+    "image": "/assets-pre-black-ju/capas-portal/foto_principal_600x600px_PP-1024x1024.jpg",
+    "description": "Mais do que ensinar, é sobre incluir: aprenda estratégias eficazes para alunos com TEA.",
+    "lessons": "19 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/TEA-PP/teapp.html"
+  },
+  {
+    "id": "habilidades-sociais-e-funcoes-executivas",
+    "name": "Habilidades Sociais e Funções Executivas",
+    "kind": "course",
+    "amount": 39700,
+    "originalAmount": 89700,
+    "previousOffer": 62790,
+    "image": "/assets-pre-black-ju/capas-portal/capa-habilidades-sociais.jpg",
+    "description": "Aprofunde o olhar sobre habilidades sociais e funções executivas na prática profissional.",
+    "lessons": "28 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/hs-e-fe/hs-e-fe.html"
+  },
+  {
+    "id": "inventario-portage",
+    "name": "Inventário Portage",
+    "kind": "course",
+    "amount": 39700,
+    "originalAmount": 89700,
+    "previousOffer": 53820,
+    "image": "/assets-pre-black-ju/capas-portal/card_venda_600x600-3.jpg",
+    "description": "Avalie com precisão, intervenha com confiança: domine o Inventário Portage e transforme sua prática clínica.",
+    "lessons": "28 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/inventario-portage/portage.html"
+  },
+  {
+    "id": "protocolo-idadi",
+    "name": "Protocolo IDADI",
+    "kind": "course",
+    "amount": 39700,
+    "originalAmount": 89700,
+    "previousOffer": 53820,
+    "image": "/assets-pre-black-ju/capas-portal/card_venda_600x600-1.jpg",
+    "description": "Do diagnóstico à intervenção: aprenda a aplicar o IDADI e potencialize os resultados terapêuticos.",
+    "lessons": "23 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/protocolo-idadi/idadi.html"
+  },
+  {
+    "id": "formacao-em-desenvolvimento-infantil",
+    "name": "Formação em Desenvolvimento Infantil",
+    "kind": "course",
+    "amount": 39700,
+    "originalAmount": 169700,
+    "previousOffer": 84850,
+    "image": "/assets-pre-black-ju/capas-portal/capa_formacao_desenv_infantil.jpg",
+    "description": "Capacitação essencial para profissionais da saúde: identifique e intervenha em falhas no desenvolvimento infantil com precisão.",
+    "lessons": "58 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/FDI/fdi.html"
+  },
+  {
+    "id": "aba-descomplicando-o-comportamento",
+    "name": "ABA — Descomplicando o Comportamento",
+    "kind": "course",
+    "amount": 39700,
+    "originalAmount": 89700,
+    "previousOffer": 44850,
+    "image": "/assets-pre-black-ju/capas-portal/Untitled-5-1024x1024.jpg",
+    "description": "Domine a Análise do Comportamento Aplicada e faça a diferença na vida de crianças com TEA.",
+    "lessons": "37 aulas",
+    "includes": [],
+    "gift": "",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/ABA/aba.html"
+  },
+  {
+    "id": "imersao-gestalt-x-analitico",
+    "name": "Imersão: Gestalt x Analítico",
+    "kind": "course",
+    "amount": 23853,
+    "originalAmount": 79509,
+    "previousOffer": 23853,
+    "image": "/assets-pre-black-ju/capas-portal/capa-gestalt.jpeg",
+    "description": "Uma imersão para compreender diferentes formas de processamento da linguagem.",
+    "lessons": "6 aulas",
+    "includes": [
+      "Gestalt x Analítico",
+      "Relatórios Fonoaudiológicos",
+      "TEA e Comorbidades"
+    ],
+    "gift": "",
+    "checkoutName": "Pacote de 3 imersões",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/processadores-linguagem/processadores-linguagem.html"
+  },
+  {
+    "id": "imersao-relatorios-fonoaudiologicos",
+    "name": "Imersão: Relatórios Fonoaudiológicos",
+    "kind": "course",
+    "amount": 23853,
+    "originalAmount": 79509,
+    "previousOffer": 23853,
+    "image": "/assets-pre-black-ju/capas-portal/capa-relatorios.jpeg",
+    "description": "Organize seus relatórios com mais clareza e segurança na prática fonoaudiológica.",
+    "lessons": "6 aulas",
+    "includes": [
+      "Gestalt x Analítico",
+      "Relatórios Fonoaudiológicos",
+      "TEA e Comorbidades"
+    ],
+    "gift": "",
+    "checkoutName": "Pacote de 3 imersões",
+    "sourceDetails": "https://superblackdaju.com.br/vendas/cursos-pre-black/relatorios-fonoaudiologos/relatorios.html"
+  },
+  {
+    "id": "combo-fala",
+    "name": "Combo Fala",
+    "kind": "combo",
+    "amount": 49700,
+    "originalAmount": 205660,
+    "previousOffer": 123396,
+    "image": "/assets-pre-black-ju/capas-portal/card-vendas-ecolalia-capa-3-1024x1024.jpg",
+    "description": "Aprofunde seus conhecimentos em comunicação e fala.",
+    "lessons": "",
+    "includes": [
+      "Comunicação Aumentativa e Alternativa",
+      "Transtornos Motores da Fala",
+      "Prosódia",
+      "Formação em Ecolalia"
+    ],
+    "gift": "",
+    "images": [
+      "/assets-pre-black-ju/capas-portal/card-vendas-ecolalia-capa-3-1024x1024.jpg",
+      "/assets-pre-black-ju/capas-portal/capa-600x600px_TMF.jpg"
+    ]
+  },
+  {
+    "id": "combo-avaliacao-neuropsicologica-e-linguagem",
+    "name": "Combo Avaliação neuropsicológica e linguagem",
+    "kind": "combo",
+    "amount": 49700,
+    "originalAmount": 207190,
+    "previousOffer": 124314,
+    "image": "/assets-pre-black-ju/capas-portal/card_venda_600x600-2.jpg",
+    "description": "Amplie seu repertório para compreender o desenvolvimento e a linguagem.",
+    "lessons": "",
+    "includes": [
+      "Marcos do Desenvolvimento",
+      "Sinapse — Neurociência na Prática",
+      "Avaliando a Linguagem Infanto Juvenil",
+      "Habilidades Sociais e Funções Executivas"
+    ],
+    "gift": "✦ Imersão TEA e Comorbidades de presente",
+    "images": [
+      "/assets-pre-black-ju/capas-portal/card_venda_600x600-2.jpg",
+      "/assets-pre-black-ju/capas-portal/capa-ALIJ.jpg",
+      "/assets-pre-black-ju/capas-portal/capa-habilidades-sociais.jpg"
+    ]
+  },
+  {
+    "id": "combo-avaliacao-e-intervencao-em-linguagem",
+    "name": "Combo Avaliação e intervenção em linguagem",
+    "kind": "combo",
+    "amount": 49700,
+    "originalAmount": 233590,
+    "previousOffer": 163513,
+    "image": "/assets-pre-black-ju/capas-portal/capa-600x600px_TMF.jpg",
+    "description": "Aprofunde seus conhecimentos em avaliação e intervenção da linguagem.",
+    "lessons": "",
+    "includes": [
+      "Comunicação Aumentativa e Alternativa",
+      "Transtornos Motores da Fala",
+      "Diagnóstico do Desenvolvimento da Linguagem",
+      "Pragmática",
+      "Prosódia"
+    ],
+    "gift": "",
+    "images": [
+      "/assets-pre-black-ju/capas-portal/capa-600x600px_TMF.jpg",
+      "/assets-pre-black-ju/capas-portal/capa-DDL2-600x600px.jpg"
+    ]
+  },
+  {
+    "id": "combo-protocolos",
+    "name": "Combo Protocolos",
+    "kind": "combo",
+    "amount": 49700,
+    "originalAmount": 266250,
+    "previousOffer": 159750,
+    "image": "/assets-pre-black-ju/capas-portal/capa-abfw.png",
+    "description": "Ferramentas para apoiar a avaliação e o raciocínio clínico.",
+    "lessons": "",
+    "includes": [
+      "ABFW Completo",
+      "Portage",
+      "Protocolo IDADI",
+      "Avaliando a Linguagem Infanto Juvenil"
+    ],
+    "gift": "",
+    "images": [
+      "/assets-pre-black-ju/capas-portal/capa-abfw.png",
+      "/assets-pre-black-ju/capas-portal/card_venda_600x600-3.jpg",
+      "/assets-pre-black-ju/capas-portal/card_venda_600x600-1.jpg"
+    ]
+  },
+  {
+    "id": "combo-tea-avaliacao-desenvolvimento-e-intervencao",
+    "name": "Combo TEA: avaliação, desenvolvimento e intervenção",
+    "kind": "combo",
+    "amount": 49700,
+    "originalAmount": 224220,
+    "previousOffer": 134532,
+    "image": "/assets-pre-black-ju/capas-portal/Foto-principal.png",
+    "description": "Aprofunde o raciocínio sobre o desenvolvimento infantil e a compreensão do TEA.",
+    "lessons": "",
+    "includes": [
+      "Formação em Autismo",
+      "Sinapse — Neurociência na Prática",
+      "Formação em Desenvolvimento Infantil",
+      "Avaliação e Raciocínio no TEA"
+    ],
+    "gift": "✦ Imersão TEA e Comorbidades de presente",
+    "images": [
+      "/assets-pre-black-ju/capas-portal/Foto-principal.png",
+      "/assets-pre-black-ju/capas-portal/capa_formacao_desenv_infantil.jpg"
+    ]
+  }
+]
