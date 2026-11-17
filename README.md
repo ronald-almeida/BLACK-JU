@@ -43,11 +43,9 @@ Integração baseada na [documentação oficial](https://docs.quantumpay.com.br/
 
 Os testes automatizados usam respostas controladas e não geram cobranças reais. A homologação de um pagamento real deve ser feita pelo proprietário antes de considerar confirmada a conciliação financeira. A autenticação de saúde não valida a liquidação de um pagamento.
 
-### Transição da Firebot
-
-Novas cobranças usam apenas a QuantumPay; não há fallback para criar cobranças na Firebot. Mantenha `FIREBOT_API_KEY` enquanto houver cobranças anteriores abertas: recibos antigos continuam sendo verificados com a assinatura original e consultados somente por `GET /api/v1/pix/{transactionId}` na Firebot. Os recibos antigos expiram em sete dias. A aba mantém a mesma chave de armazenamento para não gerar uma segunda cobrança durante a migração.
-
 ## Operação
+
+Criação e consulta de cobranças usam somente a QuantumPay. Referências sem esse provedor são rejeitadas antes de qualquer chamada externa. Uma cobrança salva é verificada antes de reexibir seu QR; referências inválidas deixam de ser exibidas e orientam contato com o suporte, sem gerar outra cobrança.
 
 O checkout valida nome, emails, CPF/CNPJ numérico e celular no cliente e no servidor. A aba guarda a referência da cobrança em sessionStorage, sem os dados pessoais do formulário, para retomar um Pix após recarregar a página. Respostas incertas bloqueiam reenvio na mesma aba. A documentação de criação PIX IN não define um contrato de idempotência; não há garantia entre dispositivos ou abas nem reenvio automático de cobranças. Falhas de autenticação anteriores ao envio permitem nova tentativa.
 

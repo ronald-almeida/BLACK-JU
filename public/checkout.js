@@ -20,17 +20,20 @@ function updateStatus(status) {
     paid: 'Pagamento confirmado! Vamos encaminhar você para liberar seu acesso com o suporte.',
     cancelled: 'Pagamento cancelado. Entre em contato com o vendedor antes de gerar outra cobrança.',
     expired: 'Este Pix expirou. Não pague este código. Entre em contato com o vendedor.',
+    verifying: 'Verificando a cobrança salva antes de exibir o código Pix…',
+    unavailable: 'Esta cobrança não pode mais ser consultada neste checkout. Não pague o código anterior nem repita a compra; fale com o suporte para verificar seu pagamento.',
   };
   $('payment-status').textContent = messages[status] || messages.pending;
   $('payment-status').className = status === 'paid' ? 'paid' : '';
   $('check-status').hidden = status !== 'pending';
   $('copy-pix').disabled = status !== 'pending';
+  $('payment-support').hidden = status !== 'unavailable';
+  $('qr-area').hidden = status !== 'pending';
+  $('pix-code').hidden = status !== 'pending';
+  document.querySelector('label[for="pix-code"]').hidden = status !== 'pending';
+  $('generate-label').textContent = status === 'pending' ? 'Código Pix gerado' : status === 'paid' ? 'Pagamento confirmado ✓' : status === 'verifying' ? 'Verificando cobrança…' : status === 'unavailable' ? 'Fale com o suporte' : 'Cobrança encerrada';
   if (status !== 'pending') {
     clearTimeout(timer);
-    $('qr-area').hidden = true;
-    $('pix-code').hidden = true;
-    document.querySelector('label[for="pix-code"]').hidden = true;
-    $('generate-label').textContent = status === 'paid' ? 'Pagamento confirmado ✓' : 'Cobrança encerrada';
   }
 }
 function renderPayment() {
@@ -55,6 +58,7 @@ async function request(path, body, timeout = 27000) {
   if (!response.ok) {
     const error = new Error(data.error || 'Não foi possível confirmar a operação. Verifique com o vendedor.');
     error.retryable = data.retryable === true;
+    error.status = response.status;
     throw error;
   }
   return data;
@@ -77,6 +81,11 @@ async function checkStatus(manual = true) {
     // Redirect only after the server verifies the charge, never from the cached status.
     if (result.status === 'paid') location.replace('/obrigado.html');
   } catch (error) {
+    if (error.status === 401) {
+      payment.status = 'unavailable';
+      storage.set({ payment }); updateStatus(payment.status);
+      return;
+    }
     pollDelay = Math.min(pollDelay * 2, 60000);
     if (manual || payment.status === 'paid') {
       $('payment-status').textContent = 'Não foi possível consultar agora. Se você já pagou, não pague novamente. Tente consultar em instantes.';
@@ -149,7 +158,10 @@ try {
     const saved = storage.get();
     if (saved?.payment?.amount === product.amount && saved.payment.token && saved.payment.copyPaste) {
       payment = saved.payment; renderPayment();
-      if (['pending', 'paid'].includes(payment.status)) checkStatus(false);
+      if (['pending', 'paid'].includes(payment.status)) {
+        updateStatus('verifying');
+        checkStatus(true);
+      }
     } else if (saved?.uncertain) {
       uncertain = true; $('generate').disabled = true;
       $('generate-label').textContent = 'Verifique a cobrança com o vendedor';

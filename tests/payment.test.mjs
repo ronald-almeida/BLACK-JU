@@ -1,6 +1,5 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createHmac } from 'node:crypto';
 import { createPayment, getPaymentStatus, createReceipt, readReceipt, crc16, validatePixCode, PaymentError } from '../lib/payment.js';
 import { readPost } from '../lib/http.js';
 import catalog from '../public/catalog.json' with { type: 'json' };
@@ -17,7 +16,6 @@ const fake = (amount, extra = {}) => ({ success: true, data: { id: 'trx_test_123
 const provider = handler => async (url, init) => url.endsWith('/api/auth') ? auth() : handler(url, init);
 process.env.QUANTUMPAY_API_KEY = 'pk_test_only_not_a_real_key';
 process.env.QUANTUMPAY_API_SECRET = 'sk_test_only_not_a_real_secret';
-process.env.FIREBOT_API_KEY = 'fire_sk_live_test_only_not_a_real_key';
 
 test('Cria todas as 20 ofertas em centavos pela QuantumPay, sem aceitar preço do cliente', async () => {
   for (const product of catalog) {
@@ -71,7 +69,7 @@ test('Token adulterado, expirado ou vinculado a outro provedor não permite cons
   let calls = 0; await assert.rejects(getPaymentStatus(token + 'bad', () => { calls++; }), PaymentError); assert.equal(calls, 0);
   assert.throws(() => readReceipt(createReceipt('trx_test_12345', catalog[0], 0)), PaymentError);
   const [payload, signature] = token.split('.');
-  const forged = Buffer.from(JSON.stringify({ ...JSON.parse(Buffer.from(payload, 'base64url')), provider: 'firebot' })).toString('base64url');
+  const forged = Buffer.from(JSON.stringify({ ...JSON.parse(Buffer.from(payload, 'base64url')), provider: 'outro-provedor' })).toString('base64url');
   assert.throws(() => readReceipt(forged + '.' + signature), PaymentError);
 });
 test('Consulta confirma apenas ID, valor em centavos e status reconhecido', async () => {
@@ -89,24 +87,20 @@ test('Consulta confirma apenas ID, valor em centavos e status reconhecido', asyn
     await assert.rejects(getPaymentStatus(token, provider(async () => Response.json({ data: transaction }))), PaymentError);
   }
 });
-test('Cobranças Firebot anteriores continuam sendo consultadas sem credenciais QuantumPay', async () => {
-  const payload = Buffer.from(JSON.stringify({ transactionId: 'fire_tx_old_12345', productId: catalog[0].id, amount: 39700, expiresAt: Date.now() + 86400000 })).toString('base64url');
-  const signature = createHmac('sha256', process.env.FIREBOT_API_KEY).update('black-ju-receipt-v1:').update(payload).digest('base64url');
-  const key = process.env.QUANTUMPAY_API_KEY; delete process.env.QUANTUMPAY_API_KEY;
-  try {
-    const result = await getPaymentStatus(payload + '.' + signature, async (url, init) => {
-      assert.equal(url, 'https://firebotbr.com/api/v1/pix/fire_tx_old_12345'); assert.notEqual(init.method, 'POST'); assert.equal(init.headers['x-api-key'], process.env.FIREBOT_API_KEY);
-      return Response.json({ transaction: { transactionId: 'fire_tx_old_12345', amount: 397, status: 'PAID' } });
-    });
-    assert.deepEqual(result, { status: 'paid', amount: 39700 });
-  } finally { process.env.QUANTUMPAY_API_KEY = key; }
+test('Recibos sem provedor ou de outro provedor são rejeitados sem chamadas externas', async () => {
+  for (const provider of [undefined, 'outro-provedor']) {
+    const payload = Buffer.from(JSON.stringify({ provider, transactionId: 'trx_old_12345', productId: catalog[0].id, amount: 39700, expiresAt: Date.now() + 86400000 })).toString('base64url');
+    let calls = 0;
+    await assert.rejects(getPaymentStatus(payload + '.assinatura-anterior', async () => { calls++; }), error => error.status === 401);
+    assert.equal(calls, 0);
+  }
 });
 test('Falha de rede após envio não repete a cobrança nem habilita nova compra', async () => {
   let calls = 0;
   await assert.rejects(createPayment(catalog[0].id, customer, 'https://example.com', provider(async () => { calls++; throw new Error('timeout'); })), error => error.retryable === false);
   assert.equal(calls, 1);
 });
-test('Sem qualquer uma das credenciais, não chama nenhum provedor nem usa Firebot como fallback', async () => {
+test('Sem qualquer uma das credenciais QuantumPay, não faz chamadas externas', async () => {
   for (const name of ['QUANTUMPAY_API_KEY', 'QUANTUMPAY_API_SECRET']) {
     const value = process.env[name]; delete process.env[name]; let calls = 0;
     try {
