@@ -1,6 +1,6 @@
 # Black Dobrada da Ju
 
-Página de vendas baseada na referência fornecida pelo proprietário, com as imagens e capas locais, 15 ofertas de cursos e 5 combos. O checkout independente segue os anexos e usa exclusivamente Pix pela Firebot, sem alegar proteção ou processamento Hotmart.
+Página de vendas baseada na referência fornecida pelo proprietário, com as imagens e capas locais, 15 ofertas de cursos e 5 combos. O checkout independente segue os anexos e usa exclusivamente Pix pela QuantumPay, sem alegar proteção ou processamento Hotmart.
 
 ## Preços
 
@@ -22,30 +22,36 @@ node --test --test-isolation=none tests/*.test.mjs
 node scripts/build.mjs
 ```
 
-O servidor local usa http://127.0.0.1:4173. Para cobranças, configure `FIREBOT_API_KEY` em um arquivo `.env.local` ignorado pelo Git e execute `node --env-file=.env.local scripts/serve.mjs`. `STORE_URL` permite informar uma origem HTTPS canônica para testes autorizados.
+O servidor local usa http://127.0.0.1:4173. Para cobranças, configure `QUANTUMPAY_API_KEY` e `QUANTUMPAY_API_SECRET` em um arquivo `.env.local` ignorado pelo Git e execute `node --env-file=.env.local scripts/serve.mjs`. `STORE_URL` permite informar uma origem HTTPS canônica para testes autorizados.
 
 ## Vercel
 
 Projeto `black-ju`, equipe `ronald-almeida-4717s-projects`, repositório `ronald-almeida/BLACK-JU`, branch `main`. Framework Other, Node 24.x, build `node scripts/build.mjs`, saída `dist`. As funções estão em `api/`.
 
-Configure `FIREBOT_API_KEY` como Secret em Production. O código não contém credenciais. `GET /api/health` informa apenas se a chave está configurada; não testa sua validade no provedor. Mudanças de variável exigem novo deploy.
+Configure `QUANTUMPAY_API_KEY` e `QUANTUMPAY_API_SECRET` como Secret em Production. O código não contém credenciais. `GET /api/health` informa apenas se as credenciais estão configuradas. `GET /api/health?check=provider` também testa a autenticação, sem criar cobranças e sem retornar o token. Mudanças de variável exigem novo deploy.
 
-## Firebot
+## QuantumPay
 
-Contrato reutilizado da integração existente, baseada na documentação https://firebotbr.com/integracoes/docs consultada em 13/11/2026:
+Integração baseada na [documentação oficial](https://docs.quantumpay.com.br/), consultada em 16/11/2026:
 
-- `POST /api/v1/pix/create`, autenticação `x-api-key`, valor em reais, `productType: DIGITAL`, `storeUrl`, `description`, `customer.name/email/cpf/phone`, `qrStyle: plain`.
-- QR e Copia e Cola só são exibidos após validar identificador, valor e CRC do BR Code.
-- `GET /api/v1/pix/{transactionId}` consulta o status. A API local exige um recibo assinado vinculado à oferta, transação e valor. Só `PAID` com ID e valor correspondentes confirma a compra.
+- [Autenticação](https://docs.quantumpay.com.br/pages/auth/generate-token): `POST https://api.quantumpay.com.br/api/auth`, Basic Auth com API Key e Secret. Token Bearer mantido somente em memória no servidor, compartilhado entre chamadas simultâneas na mesma instância e renovado um minuto antes da expiração. `expiresIn` é expresso em milissegundos.
+- [Criação](https://docs.quantumpay.com.br/pages/pix-in/create-qrcode): `POST /api/v1/pix/in/qrcode`, `amountInCents` em centavos, descrição de até 140 caracteres, cliente com CPF/CNPJ numérico e um item digital (`tangible: false`). Preço e item vêm do catálogo do servidor.
+- A resposta usa `data.id`, `data.pix.emv` e `data.status`. QR e Copia e Cola só são exibidos após validar identificador, status inicial, valores retornados (quando presentes) e CRC do BR Code. A criação documentada pode omitir o valor; se o EMV contiver valor, ele também deve corresponder à oferta.
+- [Consulta descrita no fluxo PIX IN](https://docs.quantumpay.com.br/pages/pix-in/overview): `GET /api/v1/transactions/{id}`. A API local exige recibo assinado vinculado ao provedor, oferta, transação e valor. Só `paid`, ID correspondente e valor inteiro em centavos (`amountInCents` ou `amount`) confirmam a compra. Respostas sem valor, com campos conflitantes ou status desconhecido não confirmam pagamento.
+- `pending`, `paid`, `canceled`, `refunded` e `expired` são normalizados para os estados do checkout. Uma consulta rejeitada com 401 pode renovar o token e ser repetida uma vez; criação nunca é reenviada automaticamente.
 - O QR é gerado no navegador a partir do código retornado pelo provedor, usando biblioteca local MIT em `public/vendor/`.
 
-Os testes automatizados usam respostas controladas e não geram cobranças reais. A resposta de consulta do provedor precisa conter `transactionId`, `amount` e `status`, diretamente ou dentro de `transaction`/`data`. A homologação de um pagamento real deve ser feita pelo proprietário antes de considerar confirmada a conciliação financeira.
+Os testes automatizados usam respostas controladas e não geram cobranças reais. A homologação de um pagamento real deve ser feita pelo proprietário antes de considerar confirmada a conciliação financeira. A autenticação de saúde não valida a liquidação de um pagamento.
+
+### Transição da Firebot
+
+Novas cobranças usam apenas a QuantumPay; não há fallback para criar cobranças na Firebot. Mantenha `FIREBOT_API_KEY` enquanto houver cobranças anteriores abertas: recibos antigos continuam sendo verificados com a assinatura original e consultados somente por `GET /api/v1/pix/{transactionId}` na Firebot. Os recibos antigos expiram em sete dias. A aba mantém a mesma chave de armazenamento para não gerar uma segunda cobrança durante a migração.
 
 ## Operação
 
-O checkout valida nome, emails, CPF/CNPJ numérico e celular no cliente e no servidor. A aba guarda a referência da cobrança em sessionStorage, sem os dados pessoais do formulário, para retomar um Pix após recarregar a página. Respostas incertas bloqueiam reenvio na mesma aba; não existe garantia de idempotência entre dispositivos ou abas, pois esse suporte não está documentado pela Firebot. Não há reenvio automático de cobranças.
+O checkout valida nome, emails, CPF/CNPJ numérico e celular no cliente e no servidor. A aba guarda a referência da cobrança em sessionStorage, sem os dados pessoais do formulário, para retomar um Pix após recarregar a página. Respostas incertas bloqueiam reenvio na mesma aba. A documentação de criação PIX IN não define um contrato de idempotência; não há garantia entre dispositivos ou abas nem reenvio automático de cobranças. Falhas de autenticação anteriores ao envio permitem nova tentativa.
 
-A consulta de status pausa quando a aba fica oculta e termina quando o pagamento é concluído ou cancelado. O prazo só é mostrado se o provedor informar a expiração. Após a API confirmar `paid` e o valor esperado, o checkout redireciona para `/obrigado.html`. Uma cobrança salva como paga é consultada novamente ao recarregar; o status no navegador, sozinho, não dispara o redirecionamento.
+A consulta de status ocorre a cada 12 segundos, recua progressivamente até 60 segundos em caso de erro, pausa quando a aba fica oculta e termina quando o pagamento é concluído ou cancelado. O prazo só é mostrado se o provedor informar a expiração. Após a API confirmar `paid` e o valor esperado, o checkout redireciona para `/obrigado.html`. Uma cobrança salva como paga é consultada novamente ao recarregar; o status no navegador, sozinho, não dispara o redirecionamento.
 
 A página de obrigado orienta o comprador a liberar o acesso pelo WhatsApp do suporte, `+55 75 98839-3742`. O botão abre uma mensagem pronta, sem transmitir os dados do comprador nem o token da cobrança. A liberação é manual pela equipe: este projeto não cria contas de aluno, envia emails nem libera cursos automaticamente. A página de obrigado é pública e não é um comprovante de pagamento; o suporte deve conferir a compra no provedor antes da liberação. Não há banco próprio de pedidos nem webhook de liberação.
 

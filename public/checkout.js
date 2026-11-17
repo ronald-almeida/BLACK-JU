@@ -2,7 +2,7 @@ import { validateCustomer, formatDocument, formatPhone } from './validation.js';
 
 const $ = id => document.getElementById(id);
 const currency = cents => (cents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-let product, payment, busy = false, checking = false, timer, uncertain = false;
+let product, payment, busy = false, checking = false, timer, uncertain = false, pollDelay = 12000;
 const productId = new URLSearchParams(location.search).get('produto');
 const storageKey = `black-ju:payment:${productId}`;
 const storage = {
@@ -61,7 +61,7 @@ async function request(path, body, timeout = 27000) {
 }
 function scheduleStatus() {
   clearTimeout(timer);
-  if (!document.hidden && ['pending', 'paid'].includes(payment?.status)) timer = setTimeout(() => checkStatus(false), 8000);
+  if (!document.hidden && ['pending', 'paid'].includes(payment?.status)) timer = setTimeout(() => checkStatus(false), pollDelay);
 }
 async function checkStatus(manual = true) {
   if (!payment || checking || !['pending', 'paid'].includes(payment.status)) return;
@@ -72,10 +72,12 @@ async function checkStatus(manual = true) {
     const result = await request('/api/pix-status', { token: payment.token }, 23000);
     if (result.amount !== product.amount || !['pending', 'paid', 'cancelled', 'expired'].includes(result.status)) throw new Error('Não foi possível validar a confirmação do pagamento.');
     payment.status = result.status;
+    pollDelay = 12000;
     storage.set({ payment }); updateStatus(result.status);
     // Redirect only after the server verifies the charge, never from the cached status.
     if (result.status === 'paid') location.replace('/obrigado.html');
   } catch (error) {
+    pollDelay = Math.min(pollDelay * 2, 60000);
     if (manual || payment.status === 'paid') {
       $('payment-status').textContent = 'Não foi possível consultar agora. Se você já pagou, não pague novamente. Tente consultar em instantes.';
       $('check-status').hidden = false;
